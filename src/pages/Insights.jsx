@@ -3,6 +3,14 @@ const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'
 
 function Insights({ transactions }) {
   // Spending by category (for pie chart)
+  if (transactions.length === 0) {
+    return (
+      <div>
+        <h1>Insights</h1>
+        <p>No transactions available. Please add some transactions to see insights.</p>
+      </div>
+    )
+  }
   const categoryTotals = transactions
     .filter((t) => t.type === 'expense')
     .reduce((acc, t) => {

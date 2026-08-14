@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import "./AddTransaction.css"
 function AddTransaction({ onAdd ,onEdit, transactions}) {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -30,36 +31,85 @@ function AddTransaction({ onAdd ,onEdit, transactions}) {
   }
 
   return (
-    <div style={{ padding: '1rem' }}>
-      <h1>Add Transaction</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Date</label>
-          <input type="date" name="date" value={formData.date} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Amount</label>
-          <input type="number" name="amount" value={formData.amount} onChange={handleChange} step="0.01" required />
-        </div>
-        <div>
-          <label>Category</label>
-          <input type="text" name="category" value={formData.category} onChange={handleChange} required />
-        </div>
-        <div>
-          <label>Type</label>
-          <select name="type" value={formData.type} onChange={handleChange}>
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
-          </select>
-        </div>
-        <div>
-          <label>Note</label>
-          <input type="text" name="note" value={formData.note} onChange={handleChange} />
-        </div>
-        <button type="submit">Add Transaction</button>
-      </form>
-    </div>
-  )
-}
+    <div className="add-transaction-page">
+      <div className="transaction-form-card">
+        <h1>Add Transaction</h1>
 
+        <form onSubmit={handleSubmit}>
+
+          <div className="form-group">
+            <label htmlFor="date">Date</label>
+            <input
+              id="date"
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="amount">Amount</label>
+            <input
+              id="amount"
+              type="number"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              step="0.01"
+              placeholder="Enter amount"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="category">Category</label>
+            <input
+              id="category"
+              type="text"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              placeholder="e.g. Food, Travel, Shopping"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="type">Type</label>
+
+            <select
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+            >
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="note">Note</label>
+
+            <input
+              id="note"
+              type="text"
+              name="note"
+              value={formData.note}
+              onChange={handleChange}
+              placeholder="Optional note"
+            />
+          </div>
+
+          <button className="submit-button" type="submit">
+            Add Transaction
+          </button>
+
+        </form>
+      </div>
+    </div>
+    )
+  }
 export default AddTransaction

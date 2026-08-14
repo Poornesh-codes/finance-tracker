@@ -1,0 +1,109 @@
+.add-transaction-page {
+  min-height: 100vh;
+  padding: 40px 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  background: #f5f6fa;
+}
+
+.transaction-form-card {
+  width: 100%;
+  max-width: 600px;
+
+  padding: 32px;
+
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.transaction-form-card h1 {
+  margin: 0 0 28px;
+
+  font-size: 30px;
+  font-weight: 700;
+  color: #242d3e;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #242d3e;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 12px 14px;
+
+  font-size: 15px;
+
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+
+  background: white;
+  color: #242d3e;
+
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #907bde;
+  box-shadow: 0 0 0 3px rgba(144, 123, 222, 0.15);
+}
+
+.form-group input::placeholder {
+  color: #9ca3af;
+}
+
+.submit-button {
+  width: 100%;
+
+  margin-top: 8px;
+  padding: 13px 20px;
+
+  border: none;
+  border-radius: 10px;
+
+  background: #907bde;
+  color: white;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.submit-button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 600px) {
+  .add-transaction-page {
+    padding: 20px 12px;
+  }
+
+  .transaction-form-card {
+    padding: 24px 18px;
+  }
+
+  .transaction-form-card h1 {
+    font-size: 26px;
+  }
+}
