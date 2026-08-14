@@ -1,5 +1,6 @@
 import { useState } from 'react'
-function Transactions({ transactions }) {
+import { Link } from 'react-router-dom'
+function Transactions({ transactions ,onDelete, onEdit}) {
   const [Search, setSearch] = useState('')
   const [CategoryFilter, setCategoryFilter] = useState('All')
   const [TypeFilter, setTypeFilter] = useState('All')
@@ -15,6 +16,22 @@ function Transactions({ transactions }) {
 
     return matchesSearch && matchesCategory && matchesType && matchesStartDate && matchesEndDate
   })
+  function convertToCSV(data) {
+    const headers = ['Date', 'Category', 'Note', 'Type', 'Amount']
+    const rows = data.map((t) => [t.date, `${t.category}`, `${t.note}`, t.type, t.amount].join(','))
+  return [headers.join(','), ...rows].join('\n')
+  }
+  function handleExportcsv(){
+    const csvstring = convertToCSV(filteredTransactions)
+    const blob = new Blob([csvstring], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'transactions.csv'
+    a.click()
+    URL.revokeObjectURL(url)
+
+  }
 
   return (
     <div style={{ padding: '1rem' }}>
@@ -41,6 +58,7 @@ function Transactions({ transactions }) {
         <input type="date" value={StartDate} onChange={(e) => setStartDate(e.target.value)} />
         <input type="date" value={EndDate} onChange={(e) => setEndDate(e.target.value)} />
         <button onClick={() => {setSearch(''); setCategoryFilter('All'); setTypeFilter('All'); setStartDate(''); setEndDate('')}}>Reset Filters</button>
+        <button onClick={handleExportcsv}>Export to CSV</button>
       </div>  
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead>
@@ -49,6 +67,7 @@ function Transactions({ transactions }) {
             <th style={{ textAlign: 'left' }}>Category</th>
             <th style={{ textAlign: 'left' }}>Note</th>
             <th style={{ textAlign: 'right' }}>Amount</th>
+            <th style={{ textAlign: 'center' }}>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -64,6 +83,10 @@ function Transactions({ transactions }) {
                 }}
               >
                 {t.type === 'income' ? '+' : '-'}${t.amount.toFixed(2)}
+              </td>
+              <td style={{ textAlign: 'center' }}>
+                <button onClick={() => onDelete(t.id)}>Delete</button>
+                <Link to={`/edit/${t.id}`}>Edit</Link>
               </td>
             </tr>
           ))}

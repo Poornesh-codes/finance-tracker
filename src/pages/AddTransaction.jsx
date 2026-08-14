@@ -1,6 +1,11 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+function AddTransaction({ onAdd ,onEdit, transactions}) {
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const transactionToEdit = transactions?.find((t) => t.id === Number(id))
 
-function AddTransaction({ onAdd }) {
   const [formData, setFormData] = useState({
     date: '',
     amount: '',
@@ -16,7 +21,12 @@ function AddTransaction({ onAdd }) {
 
   function handleSubmit(e) {
     e.preventDefault()
-    onAdd({ ...formData, amount: parseFloat(formData.amount) })
+    if (transactionToEdit) {
+      onEdit({ ...formData, amount: parseFloat(formData.amount) }, transactionToEdit.id)
+    } else {
+      onAdd({ ...formData, amount: parseFloat(formData.amount) })
+    }
+    navigate('/transactions')
   }
 
   return (
