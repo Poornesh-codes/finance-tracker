@@ -1,15 +1,15 @@
-import sampleTransactions from '../data/sampleTransactions'
+import StatCard from '../components/Statcard'
+import './Dashboard.css'
+function Dashboard({ transactions }) {
+  const totalIncome = transactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0)
 
-function Dashboard() {
-  const totalIncome = sampleTransactions.filter((t) => t.type === 'income').reduce((sum, t) => sum + t.amount, 0)
-
-  const totalExpenses = sampleTransactions
+  const totalExpenses = transactions
     .filter((t) => t.type === 'expense')
     .reduce((sum, t) => sum + t.amount, 0)
 
   const balance = totalIncome - totalExpenses
 
-  const categoryTotals = sampleTransactions
+  const categoryTotals = transactions
     .filter((t) => t.type === 'expense')
     .reduce((acc, t) => {
       acc[t.category] = (acc[t.category] || 0) + t.amount
@@ -23,9 +23,11 @@ function Dashboard() {
   return (
     <div>
       <h1>Dashboard</h1>
-      <p>Balance: ${balance.toFixed(2)}</p>
-      <p>Total Income: ${totalIncome.toFixed(2)}</p>
-      <p>Total Expenses: ${totalExpenses.toFixed(2)}</p>
+      <div className="stats-container">
+        <StatCard title="Balance" value={balance} icon="💰" delay={0.1} />
+        <StatCard title="Total Income" value={totalIncome} icon="📈" delay={0.2} />
+        <StatCard title="Total Expenses" value={totalExpenses} icon="📉" delay={0.3} />
+      </div>
 
       <h2>Top Categories</h2>
       <ul>
