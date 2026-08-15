@@ -8,7 +8,7 @@ import Navbar from './components/Navbar'
 function App() {
   const [transactions, setTransactions] = useState([])
   useEffect(() => {
-    fetch('http://localhost:5000/api/transactions')
+    fetch(`${import.meta.env.VITE_API_URL}/api/transactions`)
       .then((res) => res.json())
       .then((data) => {
         const normalised = data.map((t) => ({...t,id:t._id}))
@@ -17,7 +17,7 @@ function App() {
       .catch((err) => console.error('Failed to fetch transactions:', err))
   },[])
   function addTransaction(newTransaction) {
-    fetch('http://localhost:5000/api/transactions', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/transactions`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newTransaction),
@@ -29,7 +29,7 @@ function App() {
       .catch((err) => console.error('Failed to add transaction:', err))
   }
   function editTransaction(updatedTransaction, id) {
-    fetch(`http://localhost:5000/api/transactions/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/transactions/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedTransaction),
@@ -43,7 +43,7 @@ function App() {
       .catch((err) => console.error('Failed to edit transaction:', err))
   }
   function deleteTransaction(id) {
-    fetch(`http://localhost:5000/api/transactions/${id}`, {
+    fetch(`${import.meta.env.VITE_API_URL}/api/transactions/${id}`, {
       method: 'DELETE',
     })
       .then(() => {
