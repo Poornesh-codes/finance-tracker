@@ -5,15 +5,25 @@ import "./AddTransaction.css"
 function AddTransaction({ onAdd ,onEdit, transactions}) {
   const { id } = useParams()
   const navigate = useNavigate()
-  const transactionToEdit = transactions?.find((t) => t.id === Number(id))
+  const transactionToEdit = transactions?.find((t) => t.id === id)
 
-  const [formData, setFormData] = useState({
-    date: '',
-    amount: '',
-    category: '',
-    type: 'expense',
-    note: '',
-  })
+  const [formData, setFormData] = useState(
+    transactionToEdit
+      ? {
+          date: transactionToEdit.date,
+          amount: transactionToEdit.amount,
+          category: transactionToEdit.category,
+          type: transactionToEdit.type,
+          note: transactionToEdit.note,
+        }
+      : {
+          date: '',
+          amount: '',
+          category: '',
+          type: 'expense',
+          note: '',
+        }
+  )
   
   function handleChange(e) {
     const { name, value } = e.target
@@ -33,7 +43,7 @@ function AddTransaction({ onAdd ,onEdit, transactions}) {
   return (
     <div className="add-transaction-page">
       <div className="transaction-form-card">
-        <h1>Add Transaction</h1>
+        <h1>{transactionToEdit ? 'Edit Transaction' : 'Add Transaction'}</h1>
 
         <form onSubmit={handleSubmit}>
 
@@ -104,7 +114,7 @@ function AddTransaction({ onAdd ,onEdit, transactions}) {
           </div>
 
           <button className="submit-button" type="submit">
-            Add Transaction
+            {transactionToEdit ? 'Save Changes' : 'Add Transaction'}
           </button>
 
         </form>

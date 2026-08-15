@@ -18,7 +18,7 @@ function Transactions({ transactions ,onDelete, onEdit}) {
   })
   function convertToCSV(data) {
     const headers = ['Date', 'Category', 'Note', 'Type', 'Amount']
-    const rows = data.map((t) => [t.date, `${t.category}`, `${t.note}`, t.type, t.amount].join(','))
+    const rows = data.map((t) => [t.date, `"${t.category}"`, `"${t.note}"`, t.type, t.amount].join(','))
   return [headers.join(','), ...rows].join('\n')
   }
   function handleExportcsv(){

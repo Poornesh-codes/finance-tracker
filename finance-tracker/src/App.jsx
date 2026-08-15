@@ -1,21 +1,55 @@
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Transactions from './pages/Transactions'
 import AddTransaction from './pages/AddTransaction'
 import Insights from './pages/Insights'
 import Navbar from './components/Navbar'
-import sampleTransactions from './data/sampleTransactions'
 function App() {
-  const [transactions, setTransactions] = useState(sampleTransactions)
+  const [transactions, setTransactions] = useState([])
+  useEffect(() => {
+    fetch('http://localhost:5000/api/transactions')
+      .then((res) => res.json())
+      .then((data) => {
+        const normalised = data.map((t) => ({...t,id:t._id}))
+        setTransactions(normalised)
+      })
+      .catch((err) => console.error('Failed to fetch transactions:', err))
+  },[])
   function addTransaction(newTransaction) {
-    setTransactions((prev) => [...prev, {...newTransaction,id:Date.now()}])
+    fetch('http://localhost:5000/api/transactions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newTransaction),
+    })
+      .then((res) => res.json())
+      .then((savedTransaction) => {
+        setTransactions((prev) => [...prev, { ...savedTransaction, id: savedTransaction._id }])
+      })
+      .catch((err) => console.error('Failed to add transaction:', err))
+  }
+  function editTransaction(updatedTransaction, id) {
+    fetch(`http://localhost:5000/api/transactions/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedTransaction),
+    })
+      .then((res) => res.json())
+      .then((savedTransaction) => {
+        setTransactions((prev) =>
+          prev.map((t) => (t.id === id ? { ...savedTransaction, id: savedTransaction._id } : t))
+        )
+      })
+      .catch((err) => console.error('Failed to edit transaction:', err))
   }
   function deleteTransaction(id) {
-    setTransactions((prev) => prev.filter((t) => t.id !== id))
-  }
-  function editTransaction(updatedTransaction,id) {
-    setTransactions((prev) => prev.map((t)=>t.id===id?{...updatedTransaction,id}:t))
+    fetch(`http://localhost:5000/api/transactions/${id}`, {
+      method: 'DELETE',
+    })
+      .then(() => {
+        setTransactions((prev) => prev.filter((t) => t.id !== id))
+      })
+      .catch((err) => console.error('Failed to delete transaction:', err))
   }
 
   return (
